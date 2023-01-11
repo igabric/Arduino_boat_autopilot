@@ -63,6 +63,12 @@ Custom POI can be entered by entering two digits at a time to speed up coordinat
 
 ![image](https://user-images.githubusercontent.com/59554693/211142266-2d6b6457-d828-48ff-a800-173e729412fe.png)
 
+
+![image](https://user-images.githubusercontent.com/59554693/211788248-30ffdcad-25c9-40b3-8ee7-e78ee816011d.png)
+
+
+
+
 ### ** Used components: **
 1. TB6600 Single Axis 4A Stepper Motor Microstep Driver 9~40V Micro-Step - 1Pcs
 2. Nema 23 Stepper Motor 3Nm/1.9Nm/1.26Nm 4-lead 2.8A/4.2A - 1Pcs
