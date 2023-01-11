@@ -23,7 +23,7 @@ Used for the function of anchoring, manual control and automatic control of the 
 # Programming Arduino 
 
 ## Program flow diagrams
-The simplified flow charts shown below are only a general indication of how the program works. The program contains a lot of details that significantly affect the functionality of the device.
+The simplified flow charts shown below are only a general indication of how the program works. The program modules contains a lot of details that significantly affect the functionality of the device.
   
 ### ** Main program flow diagram: **
 ![image](https://user-images.githubusercontent.com/59554693/211130463-953db1b7-dd84-49c4-98d6-2a1d53a4f874.png)
