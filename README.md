@@ -11,9 +11,11 @@ The power supply of the microcontroller and the stepper motor driver are separat
 Settings and device management are achieved through the menu system shown in the images below.
 
 ## Init menu layout
+Used for the initial positioning of the steering wheel and to setting the system.
 ![image](https://user-images.githubusercontent.com/59554693/210937331-6c9e9ce8-ae55-45db-87f3-193b9283c990.png)
 
 ## Main manu layout
+Used for the function of anchoring, manual control and automatic control of the boat.
 ![image](https://user-images.githubusercontent.com/59554693/210937401-84aa4125-d78c-44be-9deb-f19b6d336759.png)
 
 # Programming Arduino 
