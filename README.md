@@ -67,6 +67,7 @@ Custom POI can be entered by entering two digits at a time to speed up coordinat
 ![image](https://user-images.githubusercontent.com/59554693/211788248-30ffdcad-25c9-40b3-8ee7-e78ee816011d.png)
 
 
+![image](https://user-images.githubusercontent.com/59554693/211789087-eb8f9b0f-2d11-4a77-8218-224516f5299a.png)
 
 
 ### ** Used components: **
