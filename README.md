@@ -54,11 +54,12 @@ The sixth function refers to the return to the home menu.
 Starting the anchoring function automatically records the current GPS location. Then the input of the permitted deviation from the current position is requested. After that, monitoring of the position on the anchor is started. A circle is drawn on the screen, the radius of which represents the permissible deviation from the anchoring location (center point). The current position is plotted on the LCD screen and refreshed every 5 seconds. If the distance of the current location from the anchoring location is greater than the permitted deviation, an alarm is activated.
 ![image](https://user-images.githubusercontent.com/59554693/211141601-e3155ee8-b5a8-4d56-a90b-7f06efdc7cca.png)
 
-### ** Flow diagram for anchoring function: **
-Custom POI can be entered by entering two digits at a time to speed up coordinate entry. Coordinates are entered in decimal notation. Each entry must be confirmed by pressing the button on the rotary encoder. The program provides for the input of coordinates with 6 decimal places, although the flow diagram shows the input of only 4 decimal places.
+
 
 ![image](https://user-images.githubusercontent.com/59554693/211141983-233eaac6-8fb8-4ec0-b40f-9298b06c33f1.png)
 
+### ** Flow diagram for input custom POI coordinates: **
+Custom POI can be entered by entering two digits at a time to speed up coordinate entry. Coordinates are entered in decimal notation. Each entry must be confirmed by pressing the button on the rotary encoder. The program provides for the input of coordinates with 6 decimal places, although the flow diagram shows the input of only 4 decimal places.
 
 ![image](https://user-images.githubusercontent.com/59554693/211142266-2d6b6457-d828-48ff-a800-173e729412fe.png)
 
