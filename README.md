@@ -65,6 +65,7 @@ Navigation towards the desired destination is done by first choosing a destinati
 ![image](https://user-images.githubusercontent.com/59554693/211142266-2d6b6457-d828-48ff-a800-173e729412fe.png)
 
 ### ** Flow diagram for navigation to desired course: **
+Navigation towards the desired direction (course) starts with entering the numerical value of the desired course. After that, the current GPS position (previous position) is read. Then there is a pause of 5 seconds after which the new current GPS position (next position) is loaded. Based on the two read positions, the current exchange rate is calculated. If the speed of the boat is higher than the minimum required (defined in the system settings), the current and desired course are compared. If the deviation is greater, the rudder is turned in the appropriate direction. Then the next position is declared as the previous position and the loop is repeated. If the deviation is less than allowed, the rudder returns to the neutral position. In the loop, it is possible to return to the main menu.
 
 ![image](https://user-images.githubusercontent.com/59554693/211788248-30ffdcad-25c9-40b3-8ee7-e78ee816011d.png)
 
