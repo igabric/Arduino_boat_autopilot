@@ -8,7 +8,7 @@ The power supply of the microcontroller and the stepper motor driver are separat
 
 ![image](https://user-images.githubusercontent.com/59554693/210935334-3d9cb4bf-1560-4f62-a52b-f1e53331b489.png)
 
-Settings and device management are achieved through the menu system shown in the images below.
+# Settings and device management are achieved through the menu system shown in the images below.
 
 ## Init menu layout
 Used for the initial positioning of the steering wheel and to setting the system.
