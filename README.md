@@ -70,6 +70,7 @@ Navigation towards the desired direction (course) starts with entering the numer
 ![image](https://user-images.githubusercontent.com/59554693/211788248-30ffdcad-25c9-40b3-8ee7-e78ee816011d.png)
 
 ### ** Flow diagram for manual control: **
+Starting the menu for manual control is done by pressing the button on the rotary encoder. This makes it possible to turn the rudder using the buttons on the device housing or using the remote control. The upper two buttons are used to gradually turn the rudder to the left or right, while pressing either of the lower two buttons returns the rudder to the neutral position. In the loop, it is possible to return to the main menu.
 
 ![image](https://user-images.githubusercontent.com/59554693/211789087-eb8f9b0f-2d11-4a77-8218-224516f5299a.png)
 
