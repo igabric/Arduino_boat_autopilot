@@ -268,6 +268,7 @@ void TFT_print_entered_values(){
 // ------------------------------------------------------------------------------------------------
 
 void Manual_navigate(){
+  digitalWrite(enablePin, HIGH); // enable stepper
   String buf1 = "000";
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_CYAN, TFT_BLACK);
@@ -276,7 +277,7 @@ void Manual_navigate(){
   tft.setCursor(20, 270, 4);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.println("Steering position:");
-  drawRAW("Rudder.raw", 215, 135, 50, 50);
+  drawRAW("kormilo_.raw", 215, 135, 50, 50);
   delay(1000);
   while (digitalRead(SW)== HIGH){
     tft.fillRect(270, 270, 50, 30, TFT_BLACK);
@@ -316,36 +317,46 @@ void Manual_navigate(){
     tft.setTextColor(TFT_BLACK, TFT_BLACK);
     tft.setCursor(135, 80, 4);
     tft.println("STEERING LIMIT !!!");
+    digitalWrite(enablePin, LOW); // disable stepper
   }
+  digitalWrite(enablePin, LOW); // disable stepper
   Screen_1_navigation();
 }
 
 void sterring_positive(){
   tft.fillTriangle(410, 160, 380, 140, 380, 180, TFT_GREEN);
   if(step_direction_positive == 1){
-    if(STEPPER_MOTOR.getCurrentPositionInMillimeters()<100){
+    if(STEPPER_MOTOR.getCurrentPositionInMillimeters()> -Max_steering_turning_deg){
       digitalWrite(enablePin, HIGH); // enable stepper
-      temp = temperatura(); // 
-      STEPPER_MOTOR.moveRelativeInMillimeters(5);
-      digitalWrite(enablePin, LOW); // disable stepper
+      temp = temperatura(); 
+      STEPPER_MOTOR.moveRelativeInMillimeters(-10);
+      // digitalWrite(enablePin, LOW); // disable stepper
     }
     else{
       tft.setTextColor(TFT_RED, TFT_BLACK);
       tft.setCursor(135, 80, 4);
+      #ifdef DEBUG
+        Serial.print("CurrentPositionInDegs: ");
+        Serial.println(STEPPER_MOTOR.getCurrentPositionInMillimeters());
+      #endif 
       tft.println("STEERING LIMIT !!!");
       delay(500);
     }
   }
   else{
-    if(STEPPER_MOTOR.getCurrentPositionInMillimeters()> -100){
+    if(STEPPER_MOTOR.getCurrentPositionInMillimeters()<Max_steering_turning_deg){
       digitalWrite(enablePin, HIGH); // enable stepper
-      temp = temperatura(); 
-      STEPPER_MOTOR.moveRelativeInMillimeters(-5);
-      digitalWrite(enablePin, LOW); // disable stepper
+      temp = temperatura(); // 
+      STEPPER_MOTOR.moveRelativeInMillimeters(10);
+      // digitalWrite(enablePin, LOW); // disable stepper
     }
     else{
       tft.setTextColor(TFT_RED, TFT_BLACK);
       tft.setCursor(135, 80, 4);
+      #ifdef DEBUG
+        Serial.print("CurrentPositionInDegs: ");
+        Serial.println(STEPPER_MOTOR.getCurrentPositionInMillimeters());
+      #endif 
       tft.println("STEERING LIMIT !!!");
       delay(500);
     }
@@ -355,29 +366,37 @@ void sterring_positive(){
 void sterring_negative(){
   tft.fillTriangle(60, 160, 90, 140, 90, 180, TFT_GREEN);
   if(step_direction_positive == 1){
-    if(STEPPER_MOTOR.getCurrentPositionInMillimeters()> -100){
+    if(STEPPER_MOTOR.getCurrentPositionInMillimeters()<Max_steering_turning_deg){
       digitalWrite(enablePin, HIGH); // enable stepper
       temp = temperatura();
-      STEPPER_MOTOR.moveRelativeInMillimeters(-5);
-      digitalWrite(enablePin, LOW); // disable stepper
-    }    
+      STEPPER_MOTOR.moveRelativeInMillimeters(10);
+      // digitalWrite(enablePin, LOW); // disable stepper
+    }
     else{
       tft.setTextColor(TFT_RED, TFT_BLACK);
       tft.setCursor(135, 80, 4);
+      #ifdef DEBUG
+        Serial.print("CurrentPositionInDegs: ");
+        Serial.println(STEPPER_MOTOR.getCurrentPositionInMillimeters());
+      #endif 
       tft.println("STEERING LIMIT !!!");
       delay(500);
     }
   }
   else{
-    if(STEPPER_MOTOR.getCurrentPositionInMillimeters()<100){
+    if(STEPPER_MOTOR.getCurrentPositionInMillimeters()> -Max_steering_turning_deg){
       digitalWrite(enablePin, HIGH); // enable stepper
       temp = temperatura();
-      STEPPER_MOTOR.moveRelativeInMillimeters(5);
-      digitalWrite(enablePin, LOW); // disable stepper
-    }
+      STEPPER_MOTOR.moveRelativeInMillimeters(-10);
+      // digitalWrite(enablePin, LOW); // disable stepper
+    }    
     else{
       tft.setTextColor(TFT_RED, TFT_BLACK);
       tft.setCursor(135, 80, 4);
+      #ifdef DEBUG
+        Serial.print("CurrentPositionInDegs: ");
+        Serial.println(STEPPER_MOTOR.getCurrentPositionInMillimeters());
+      #endif 
       tft.println("STEERING LIMIT !!!");
       delay(500);
     }

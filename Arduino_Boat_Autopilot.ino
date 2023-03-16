@@ -49,6 +49,8 @@
 #define TIME_ZONE
 // #define NON_BLOCKING
 // #define Add_new_POI
+#define DEBUG
+
 
 
 // ***>>>>>>>>>>>>>>             <<<<<<<<<<<<<<***
@@ -68,11 +70,12 @@
 #include <SD.h>
 #include <CSV_Parser.h>
 File myFile;
-#include <SpeedyStepper.h>
+#include <SpeedyStepper.h> // https://github.com/Stan-Reifel/SpeedyStepper/blob/master/Documentation.md
 #include <TFT_HX8357.h> // TFT_LCD library
 TFT_HX8357 tft = TFT_HX8357();       
 
-//***   KORAČNI MOTORI - PIN   ***
+
+//***   STEPPER MOTOR - PINS   ***
 #define stepPin 14 
 #define dirPin  15
 #define enablePin 16
@@ -83,7 +86,7 @@ TFT_HX8357 tft = TFT_HX8357();
 #define button3 13
 #define button4 17
 
-// *** ROTARY ENCODER PINOUT AND VARIABLE ***
+// *** ROTARY ENCODER PINOUT AND VARIABLES ***
 #define CLK 7
 #define DT 6
 #define SW 5
@@ -117,10 +120,15 @@ bool dir = true;
 int course_COG  = 1;
 int step_direction_positive = 0; // settin positive turning of steering wheel
 int gps_reading_smart_delay = 5; // delay in sec
-
-const int stepsPerRevolution = 200;
+int stepsPerRevolution = 200;
 SpeedyStepper STEPPER_MOTOR;
 int lastStateCLK;
+int delay_to_neutral = 5; // seconds
+
+//***   TIME BELT PULLEYS   ***
+int pulley1_teeth = 18;// Number of teeth on smaller pulley
+int pulley2_teeth = 120; // Number of teeth on larger pulley
+int Max_steering_turning_deg = 120;
 
 #ifdef Beitian_BN_880
   #include <TinyGPSPlus.h>
@@ -136,8 +144,8 @@ int lastStateCLK;
 #endif
 // STEPPER SETTINGS
 
-int StepsPerMillimeter = 160; // stepper initialisation - change if necessary
-int StepperAcceleration = 80; // mm/sec^2
+int StepsPerMillimeter = 4; // stepper initialisation - change if necessary
+int StepperAcceleration = 1000; // mm/sec^2
 
 float declinationAngle = 0.0788; // Milna - Brač - change acording your location
 float Heading_reading;
@@ -152,7 +160,7 @@ int lower_speed_limit = 3;
 int stepper_speed = 5;
 float CEP = 2; // Accuracy Position Horizontal : 2.0 m CEP  for Beitian BN-880 module
 // *******************************************************************
-//// USING FLASH MEMORY (ROM) FOR SAVING STRINGS kurs_labels AND CONSTANT allowed_course_deviation
+//// USING FLASH MEMORY (ROM) FOR SAVING STRINGS kurs_labels AND CONSTANT dop_odstupanje_kursa
 const char string_0[] PROGMEM = "N";
 const char string_1[] PROGMEM = "30";
 const char string_2[] PROGMEM = "60";
@@ -184,7 +192,7 @@ const char *const kurs_labels[] PROGMEM = {string_0, string_1, string_2, string_
 char buffer[10];
 
 int heading_correction = 108;
-int allowed_course_deviation = 10;
+int dop_odstupanje_kursa = 10;
 int steering_offset = 20;
 bool steering_neutral = true;
 float hdg_set_value = 180; // VARIABLE FOR SAVING THE DESIRED COURSE (Heading)
@@ -218,4 +226,6 @@ int Calc_heading();
 bool readLine(File &f, char* line, size_t maxLen);
 bool readVals(long* v1, long* v2, String* loc, String* loc2);
 String Leading_space(int number, int number_of_place);
+void HELP_scr1();
+void HELP_scr2();
 void Screen_1_navigation();

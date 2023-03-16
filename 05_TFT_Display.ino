@@ -208,7 +208,7 @@ void Lat_Long(float latitude, float longitude){
 
   tft.setTextColor(TFT_YELLOW, TFT_BLACK);
   tft.drawString("Lat:", 280, 290, 4);
-  drawRAW("Rudder.raw", 215, 260, 50, 50);
+  drawRAW("kormilo_.raw", 215, 260, 50, 50);
   tft.drawCircle(455, 287, 3, TFT_WHITE);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
   tft.drawRightString(buf2_lat, 445, 290, 4); 

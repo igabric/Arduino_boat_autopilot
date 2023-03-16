@@ -11,25 +11,28 @@ void setup(void) {
   else {
     // OPEN NEW TEXT FILE ON SD CARD  
     #ifdef Add_new_POI
-      SD.remove(F("POI.csv"));
-      myFile = SD.open(F("POI.csv"), FILE_WRITE);
+      SD.remove(F("tocke.csv"));
+      myFile = SD.open(F("tocke.csv"), FILE_WRITE);
       myFile.close();
       add_poi_list();
     #endif
     parse_poi_list();
   }
   
-  myFile = SD.open("Settings.txt", FILE_READ);
+  myFile = SD.open("varijabl.txt", FILE_READ);
   if (myFile) {
     steering_offset = myFile.parseInt();
     lower_speed_limit = myFile.parseInt();
-    allowed_course_deviation = myFile.parseInt();
+    dop_odstupanje_kursa = myFile.parseInt();
     heading_correction = myFile.parseInt();
     stepper_speed = myFile.parseInt();
     course_COG = myFile.parseInt();
     step_direction_positive = myFile.parseInt();
     gps_reading_smart_delay = myFile.parseInt();
-    StepsPerMillimeter = myFile.parseInt();
+    Max_steering_turning_deg = myFile.parseInt();
+    pulley1_teeth = myFile.parseInt();
+    pulley2_teeth = myFile.parseInt();
+    delay_to_neutral = myFile.parseInt();
     myFile.close();
   }
    
@@ -46,8 +49,15 @@ void setup(void) {
   pinMode(enablePin, OUTPUT);
   digitalWrite(enablePin, LOW); // disable stepper
   
-  // Move one motor in units of millimeters:
-  STEPPER_MOTOR.setStepsPerMillimeter(StepsPerMillimeter); // set the number of steps per millimeter
+  // Move motor in degrees of steering angle:
+  // StepsPerMillimeter = 4;
+  StepsPerMillimeter = int(round((float(pulley2_teeth) / float(pulley1_teeth))*(float(stepsPerRevolution)/360)));
+  // StepsPerMillimeter = int(round((pulley2_teeth / pulley1_teeth)*(stepsPerRevolution/360)));
+  #ifdef DEBUG
+    Serial.print("StepsPerMillimeter: ");
+    Serial.println(StepsPerMillimeter);
+  #endif 
+  STEPPER_MOTOR.setStepsPerMillimeter(StepsPerMillimeter); // set the number of steps per 1 degree turning of the steering wheel
   STEPPER_MOTOR.setSpeedInMillimetersPerSecond(stepper_speed);
   STEPPER_MOTOR.setAccelerationInMillimetersPerSecondPerSecond(StepperAcceleration);
   
@@ -75,7 +85,7 @@ void setup(void) {
 }
 
 void add_poi_list(){
-  File dataFile = SD.open(F("POI.csv"), FILE_WRITE);
+  File dataFile = SD.open(F("tocke.csv"), FILE_WRITE);
   if (dataFile) {
       dataFile.println(F("Latitude,Longitude,Lokacija"));
       dataFile.println(F("43.495343,16.529534,Strozanac"));
@@ -109,7 +119,7 @@ void add_poi_list(){
 
 void parse_poi_list(){
   CSV_Parser cp(/*format*/ "ffs", /*has_header*/ true, /*delimiter*/ ',');
-  if (cp.readSDfile("POI.csv")) {
+  if (cp.readSDfile("tocke.csv")) {
     float *column_1 = (float*)cp["Latitude"];
     float *column_2 = (float*)cp["Longitude"];
     char  **column_3 = (char**)cp["Lokacija"];
@@ -129,6 +139,6 @@ void parse_poi_list(){
     // cp.print(); // assumes that "Serial.begin()" was called before (otherwise it won't work)
   } 
   else {
-    Serial.println("ERROR: File called '/POI.csv' does not exist...");
+    Serial.println("ERROR: File called '/tocke.csv' does not exist...");
   }
 }

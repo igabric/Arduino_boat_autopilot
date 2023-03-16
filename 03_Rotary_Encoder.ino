@@ -226,9 +226,17 @@ float rot_encoder_SET_CUSTOM_COORDINATE(int x_pos, int y_pos, int max_val, int t
     }
     lastStateCLK = currentStateCLK;
     int btnState = digitalRead(SW);
-    if (btnState == LOW) {
+    if (btnState == LOW or digitalRead(PB_10n) == LOW) {
       if (millis() - lastButtonPress > 50) {
         break;
+      }
+      if (digitalRead(PB_10n) == LOW) {
+        delay(250);
+        if (digitalRead(PB_10n) == LOW) {
+          delay(250);
+          break;
+        }
+        
       }
       lastButtonPress = millis();
     }

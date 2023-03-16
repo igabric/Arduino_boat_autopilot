@@ -11,7 +11,8 @@ void Autopilot(bool ukljucen){
   float acc;
   if(ukljucen){
     tft.fillScreen(TFT_BLACK);
-    hdg_set_value = int(rot_encoder(int(hdg_set_value), 0, 360, "Heading SET:"));
+    // hdg_set_value = int(rot_encoder(int(hdg_set_value), 0, 360, "Heading SET:"));
+    hdg_set_value = Calc_heading();
     tft.setTextColor(TFT_YELLOW);
     tft.drawString("Heading:        ", 10, 110, 4);
     SET_HDG(hdg_set_value);
@@ -361,7 +362,7 @@ void Navigate(){
   String buf1;
   // Comparison of the current and optimal course and its correction using the autopilot
   // COURSE CORRECTION IF THE DEVIATION IS GREATER THAN THE INITIALLY SET NUMBER OF DEGREES
-  if (millis() - time_count > 5000){
+  if (millis() - time_count > delay_to_neutral*1000){
 //    if (gps.speed.isValid() and gps.course.isValid()){
     if (course_COG == 1){
       if (gps.course.isValid()){
@@ -399,7 +400,7 @@ void Navigate(){
           difference-=360;
         }
       }        
-      if (abs(difference) > allowed_course_deviation and difference > 0 and steering == false){
+      if (abs(difference) > dop_odstupanje_kursa and difference > 0 and steering == false){
         tft.setTextColor(TFT_PINK, TFT_BLACK);
         tft.setCursor(x_pos, y_pos, 4);  tft.print("STEERING    ");
         tft.fillCircle(x_pos + 150, y_pos, 20,  TFT_PINK);
@@ -419,7 +420,7 @@ void Navigate(){
         tft.setTextColor(TFT_GREEN, TFT_BLACK);        
         tft.setCursor(x_pos, y_pos, 4);  tft.print("Pilot ON   ");        
       }
-      if (abs(difference) > allowed_course_deviation and difference < 0 and steering == false){
+      if (abs(difference) > dop_odstupanje_kursa and difference < 0 and steering == false){
         tft.setTextColor(TFT_PINK, TFT_BLACK);
         tft.setCursor(x_pos, y_pos, 4);  tft.print("STEERING    ");
         tft.fillCircle(x_pos + 150, y_pos, 20,  TFT_PINK);
@@ -437,7 +438,7 @@ void Navigate(){
         tft.setTextColor(TFT_GREEN, TFT_BLACK);        
         tft.setCursor(x_pos, y_pos, 4);  tft.print("Pilot ON   ");
       }
-      if (abs(difference) > allowed_course_deviation and difference > 0 and steering == true){
+      if (abs(difference) > dop_odstupanje_kursa and difference > 0 and steering == true){
         if(dir == false and difference > 0){
           tft.setTextColor(TFT_PINK, TFT_BLACK);
           tft.setCursor(x_pos, y_pos, 4);  tft.print("STEERING    ");
@@ -457,7 +458,7 @@ void Navigate(){
           tft.setCursor(x_pos, y_pos, 4);  tft.print("Pilot ON   ");          
         }
       }
-      if (abs(difference) > allowed_course_deviation and difference < 0 and steering == true){
+      if (abs(difference) > dop_odstupanje_kursa and difference < 0 and steering == true){
         if(dir == true and difference < 0){
           tft.setTextColor(TFT_PINK, TFT_BLACK);
           tft.setCursor(x_pos, y_pos, 4);  tft.print("STEERING    ");
@@ -489,7 +490,7 @@ void Navigate(){
   }
   
   /* Neutral position steering */ 
-  if (millis() - time_count > 5000 and steering == true){
+  if (millis() - time_count > delay_to_neutral*1000 and steering == true){
     if (course_COG == 1){
       course_over_ground = gps.course.deg();
       Kompas_labels(int(course_over_ground));  
@@ -507,7 +508,7 @@ void Navigate(){
         difference-=360;
       }
     }
-    if (abs(difference) < allowed_course_deviation){
+    if (abs(difference) < dop_odstupanje_kursa){
       if (dir == true){
          tft.setTextColor(TFT_PINK, TFT_BLACK);
          tft.setCursor(x_pos, y_pos, 4);  tft.print("STEERING    ");
@@ -641,18 +642,17 @@ double navigateTo(double lat1, double long1, double lat2, double long2)
 //// ************************************************************************************************
 void Stepper_move_position(int dir){
   #ifdef NON_BLOCKING
-    STEPPER_MOTOR.setupMoveInMillimeters(dir*100*step_direction_positive);
+    STEPPER_MOTOR.setupMoveInMillimeters(dir*Max_steering_turning_deg*step_direction_positive);
     while(!STEPPER_MOTOR.motionComplete()){
-      stepper.processMovement();       // this call moves stepper
-      int stepper_pos = stepper.getCurrentPositionInMillimeters();
+      STEPPER_MOTOR.processMovement();       // this call moves stepper
+      int stepper_pos = STEPPER_MOTOR.getCurrentPositionInMillimeters();
       if (stepper_pos/10 == int(stepper_pos/10){
         Kompas_labels(int(Calc_heading()));
       }
     }
   #else
-    STEPPER_MOTOR.moveToPositionInMillimeters(dir*100*step_direction_positive);
-  #endif
-  STEPPER_MOTOR.moveToPositionInMillimeters(dir*80*step_direction_positive);      
+    STEPPER_MOTOR.moveToPositionInMillimeters(dir*Max_steering_turning_deg*step_direction_positive);
+  #endif   
 }
 
 void Stepper_move_neutral(int dir){
@@ -660,8 +660,8 @@ void Stepper_move_neutral(int dir){
     
     STEPPER_MOTOR.setupMoveInMillimeters(dir*steering_offset*step_direction_positive);
     while(!STEPPER_MOTOR.motionComplete()){
-      stepper.processMovement();       // this call moves stepper
-      int stepper_pos = stepper.getCurrentPositionInMillimeters();
+      STEPPER_MOTOR.processMovement();       // this call moves stepper
+      int stepper_pos = STEPPER_MOTOR.getCurrentPositionInMillimeters();
       if (stepper_pos/10 == int(stepper_pos/10){
         Kompas_labels(int(Calc_heading()));
       }

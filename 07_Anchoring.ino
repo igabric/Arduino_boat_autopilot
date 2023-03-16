@@ -34,7 +34,7 @@ void Anchor_alarm(){
   tft.fillScreen(TFT_BLACK);
   tft.drawCircle(90, 230, 80, TFT_YELLOW);
   tft.fillCircle(90, 230, 5, TFT_YELLOW);
-  drawRAW("Anchoring.raw", 220, 160, 50, 50);
+  drawRAW("sidrenje.raw", 220, 160, 50, 50);
   Label("ANCHORING", 100, 30, 4, "red"); 
   Label("Anchoring tolerance:", 20, 100, 4, "green");
   Label("meters", 310, 100, 4, "green");
@@ -70,6 +70,10 @@ void Anchor_alarm(){
     }
     if (digitalRead(PB_10p) == HIGH and digitalRead(PB_1p) == HIGH and digitalRead(PB_1n) == HIGH and digitalRead(PB_10n) == HIGH and digitalRead(SW)== LOW){
       tolerance = int(rot_encoder_SET_CUSTOM_COORDINATE(270, 100, 50, 4));
+      if (gps.location.isValid()){  
+        gps_lat_anc = gps.location.lat();
+        gps_long_anc = gps.location.lng();
+      }
       tft.fillCircle(90+int(80*x_dist/tolerance), 230+int(80*y_dist/tolerance), 6, TFT_BLACK);
     }
     if (Serial1.available()>0)
@@ -93,7 +97,7 @@ void Anchor_alarm(){
     if (distanca > tolerance){
         // ANCHORING ALARM ON
         tone(buzzer, 1000);
-        tft.drawCircle(90, 230, 80, TFT_RED);
+        // tft.drawCircle(90, 230, 80, TFT_RED);
          
     }
     else if (distanca < tolerance){ 
@@ -136,6 +140,6 @@ void Anchor_alarm(){
   }
   noTone(buzzer); 
   
-  drawRAW("Rudder.raw", 280, 160, 50, 50);
+  drawRAW("kormilo_.raw", 280, 160, 50, 50);
   delay(1000);
 }
